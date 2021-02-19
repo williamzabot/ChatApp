@@ -1,5 +1,6 @@
 package com.williamzabot.chatapp.ui.chatfeats.conversations
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -12,6 +13,8 @@ import com.williamzabot.chatapp.R
 import com.williamzabot.chatapp.base.BaseAuth.Companion.auth
 import com.williamzabot.chatapp.extensions.loadImage
 import com.williamzabot.chatapp.model.Contact
+import com.williamzabot.chatapp.ui.chatfeats.chat.TalkActivity
+import com.williamzabot.chatapp.ui.chatfeats.users.KEY
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -47,13 +50,19 @@ class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
     inner class ContactItem(private val contact: Contact) : Item() {
         override fun bind(viewHolder: ViewHolder, position: Int) {
             viewHolder.itemView.apply {
-                findViewById<TextView>(R.id.last_message_name_contact).text = contact.name
-                findViewById<TextView>(R.id.last_message_text).text = contact.lastMessage
-                contact.imageUrl?.let {
+                findViewById<TextView>(R.id.last_message_name_contact).text = contact.user?.fullName
+                findViewById<TextView>(R.id.last_message_text).text = contact.message?.text
+                contact.user?.imageURL?.let {
                     findViewById<CircleImageView>(R.id.last_message_img_contact).loadImage(
                         requireContext(),
                         it
                     )
+                }
+                setOnClickListener {
+                    val intent = Intent(requireContext(), TalkActivity::class.java)
+                    intent.putExtra(KEY, contact.user)
+                    startActivity(intent)
+                    activity?.finish()
                 }
             }
         }

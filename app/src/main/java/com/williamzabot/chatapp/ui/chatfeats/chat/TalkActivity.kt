@@ -29,7 +29,7 @@ class TalkActivity : AppCompatActivity() {
     private val editTextChat by lazy { findViewById<EditText>(R.id.edittext_chat) }
     private val groupAdapter = GroupAdapter<ViewHolder>()
     private lateinit var viewModel: TalkViewModel
-    private var myId = auth.currentUser?.uid
+    private val myId = auth.currentUser?.uid
     private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,17 +45,21 @@ class TalkActivity : AppCompatActivity() {
     }
 
     private fun observeEvents() {
-        viewModel.msg.observe(this) { msg ->
-            groupAdapter.add(MessageItem(msg))
+        viewModel.me.observe(this) {
+            user = it
         }
 
         viewModel.systemError.observe(this) {
             Toast.makeText(this, "Erro de sistema", Toast.LENGTH_LONG).show()
         }
 
-        viewModel.me.observe(this) {
-            user = it
+        viewModel.messages.observe(this) {
+            groupAdapter.clear()
+            for (message in it) {
+                groupAdapter.add(MessageItem(message))
+            }
         }
+
     }
 
     private fun clickSendButton() {

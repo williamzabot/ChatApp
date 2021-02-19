@@ -2,6 +2,7 @@ package com.williamzabot.chatapp.ui.chatfeats.chat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.DocumentChange.Type.ADDED
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query.Direction.ASCENDING
 import com.williamzabot.chatapp.base.BaseAuth.Companion.auth
@@ -12,8 +13,8 @@ import com.williamzabot.chatapp.model.User
 
 class TalkViewModel : BaseViewModel() {
 
-    private val _msg = MutableLiveData<Message>()
-    val msg: LiveData<Message> = _msg
+    private val _messages = MutableLiveData<List<Message>>()
+    val messages: LiveData<List<Message>> = _messages
 
     private val _me = MutableLiveData<User>()
     val me: LiveData<User> = _me
@@ -23,6 +24,7 @@ class TalkViewModel : BaseViewModel() {
 
     private val database = FirebaseFirestore.getInstance()
     private var otherUser: User? = null
+    private val listMessages = mutableListOf<Message>()
 
     fun getUser(otherUser: User) {
         this.otherUser = otherUser
@@ -46,36 +48,34 @@ class TalkViewModel : BaseViewModel() {
         user: User,
         otherUser: User
     ) {
+        listMessages.clear()
         database.collection("conversations")
             .document(user.id)
             .collection(otherUser.id)
             .orderBy("timestamp", ASCENDING)
             .addSnapshotListener { value, _ ->
                 value?.documentChanges?.let { changes ->
-                    for (doc2 in changes) {
+                    for (doc in changes) {
+                        if (doc.type == ADDED) {
                             val message =
-                                doc2.document.toObject(Message::class.java)
-                            _msg.postValue(message)
-
+                                doc.document.toObject(Message::class.java)
+                            listMessages.add(message)
+                        }
                     }
+                    _messages.postValue(listMessages)
                 }
             }
     }
 
     fun sendMessage(text: String) {
-        if (otherUser != null) {
+        if (otherUser != null && me.value != null) {
             val timestamp = System.currentTimeMillis()
             val fromId = me.value!!.id
             val toId = otherUser!!.id
             val message = Message(text, fromId, toId, timestamp)
-            val contact = Contact(
-                toId,
-                otherUser!!.fullName,
-                message.text,
-                message.timestamp,
-                otherUser!!.imageURL
-            )
-            saveInDatabase(fromId, toId, message, contact)
+            val contact1 = Contact(otherUser!!, message)
+            val contact2 = Contact(me.value!!, message)
+            saveInDatabase(fromId, toId, message, contact1, contact2)
         } else {
             _systemError.postValue(true)
         }
@@ -85,7 +85,8 @@ class TalkViewModel : BaseViewModel() {
         fromId: String,
         toId: String,
         message: Message,
-        contact: Contact
+        contact1: Contact,
+        contact2: Contact
     ) {
         database.collection("conversations")
             .document(fromId)
@@ -96,7 +97,7 @@ class TalkViewModel : BaseViewModel() {
                     .document(fromId)
                     .collection("contacts")
                     .document(toId)
-                    .set(contact)
+                    .set(contact1)
             }
 
         database.collection("conversations")
@@ -108,7 +109,7 @@ class TalkViewModel : BaseViewModel() {
                     .document(toId)
                     .collection("contacts")
                     .document(fromId)
-                    .set(contact)
+                    .set(contact2)
             }
     }
 }

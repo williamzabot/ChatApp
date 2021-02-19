@@ -16,7 +16,6 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
 
     private val viewModel by viewModels<UsersViewModel>()
     private lateinit var recyclerView: RecyclerView
-    private val navController by lazy { findNavController() }
     private val usersAdapter by lazy {
         UsersAdapter { user ->
             val intent = Intent(requireContext(), TalkActivity::class.java)
