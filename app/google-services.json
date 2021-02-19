@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "692305501745",
+    "project_id": "chat-62ea1",
+    "storage_bucket": "chat-62ea1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692305501745:android:4b7b751626a83cc5c6ff10",
+        "android_client_info": {
+          "package_name": "com.williamzabot.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692305501745-56m2lul903getbs423ue8p850vhfsndg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.williamzabot.chatapp",
+            "certificate_hash": "84d47e46bad97feec7079bed6820c57b6b5ee2a0"
+          }
+        },
+        {
+          "client_id": "692305501745-mqe1h1ihfvaprb43peihldqn2l462hds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUmzMFLXsJjwaXoZ2qTSEL_JVW5JUg7Tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692305501745-mqe1h1ihfvaprb43peihldqn2l462hds.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

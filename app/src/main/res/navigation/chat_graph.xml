@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chat_graph"
+    app:startDestination="@id/conversationsFragment">
+
+    <fragment
+        android:id="@+id/conversationsFragment"
+        android:name="com.williamzabot.chatapp.ui.chatfeats.conversations.ConversationsFragment"
+        android:label="Chat App"
+        tools:layout="@layout/fragment_conversations"/>
+
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.williamzabot.chatapp.ui.chatfeats.users.UsersFragment"
+        android:label="Contatos"
+        tools:layout="@layout/fragment_users"/>
+
+</navigation>

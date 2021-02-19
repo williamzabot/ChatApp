@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.williamzabot.chatapp.ui.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment"
+            />
+
+        <action
+            android:id="@+id/action_login_to_resetpass"
+            app:destination="@id/resetPassFragment"
+            app:popUpTo="@id/loginFragment"
+            />
+
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@+id/home_graph"
+            app:popUpToInclusive="true"
+            />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.williamzabot.chatapp.ui.login.register.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register"/>
+
+    <fragment
+        android:id="@+id/resetPassFragment"
+        android:name="com.williamzabot.chatapp.ui.login.resetpass.ResetPassFragment"
+        android:label="Esqueci minha senha"
+        tools:layout="@layout/fragment_reset_pass"/>
+
+</navigation>
